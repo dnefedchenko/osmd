@@ -1,0 +1,36 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<html>
+<head>
+    <title>Armeyskiy 8B</title>
+
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="resources/css/materialize/css/materialize.min.css"  media="screen,projection"/>
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+    <form action="/auth/login" method="post">
+        <p>Sign In</p>
+
+        <div>
+            <label for="username">Username:</label>
+            <input id="username" name="username" type="text">
+        </div>
+
+        <div>
+            <label for="password">Password:</label>
+            <input id="password" name="password" type="secret">
+        </div>
+
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
+        <button type="submit">Sign In</button>
+    </form>
+
+</body>
+</html>
