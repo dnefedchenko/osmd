@@ -1,0 +1,13 @@
+.login-wrapper {
+    margin: 15px auto;
+    border: 1px dashed grey;
+    height: 350px;
+    width: 315px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-header {
+    text-align: center;
+}
