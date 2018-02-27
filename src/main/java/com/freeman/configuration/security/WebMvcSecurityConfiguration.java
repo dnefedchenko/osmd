@@ -10,6 +10,8 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 /**
@@ -29,13 +31,14 @@ public class WebMvcSecurityConfiguration extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/auth/login").permitAll()
+                .antMatchers(HttpMethod.GET, "/login**").permitAll()
                 .anyRequest().authenticated()
             .and()
                 .formLogin()
                     .loginPage("/login")
                     .loginProcessingUrl("/auth/login")
                     .defaultSuccessUrl("/home", true)
-                    .failureUrl("/login")
+                    .failureHandler(authenticationFailureHandler())
                     .permitAll()
             .and()
                 .logout()
@@ -54,5 +57,9 @@ public class WebMvcSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    private AuthenticationFailureHandler authenticationFailureHandler() {
+        return new OsmdAuthenticationFailureHandler();
     }
 }

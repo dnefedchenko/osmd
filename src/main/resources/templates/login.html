@@ -13,10 +13,14 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 </head>
 <body>
-    <form class="login-wrapper" method="post" action="/auth/login">
+    <form class="login-wrapper" method="post" th:action="@{/auth/login}">
         <div class="row">
 
             <h4 class="login-header">Вход</h4>
+
+            <p th:text="${#request.getParameter('error')}" th:unless="${#request.getParameter('error') == null}">
+                Ошибка входа
+            </p>
 
             <form class="col s12">
                 <div class="input-field">
