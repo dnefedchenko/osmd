@@ -16,7 +16,7 @@
     <form class="login-wrapper" method="post" th:action="@{/auth/login}">
         <div class="row">
 
-            <h4 class="login-header">Вход</h4>
+            <h4 th:text="#{login.header}" class="login-header">Sign In</h4>
 
             <p th:text="${#request.getParameter('error')}" th:unless="${#request.getParameter('error') == null}">
                 Ошибка входа
