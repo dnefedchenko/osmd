@@ -1,6 +1,7 @@
 package com.freeman.configuration.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -11,7 +12,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 /**
@@ -20,6 +20,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @Configuration
 public class WebMvcSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired private OsmdUserDetailsService userDetailsService;
+    @Autowired private MessageSource messageSource;
 
     @Override
     public void configure(WebSecurity web) throws Exception {
@@ -60,6 +61,6 @@ public class WebMvcSecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     private AuthenticationFailureHandler authenticationFailureHandler() {
-        return new OsmdAuthenticationFailureHandler();
+        return new OsmdAuthenticationFailureHandler(this.messageSource);
     }
 }
