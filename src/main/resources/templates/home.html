@@ -1,14 +1,28 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html>
 <head>
     <title>Armeyskiy 8B</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <link type="text/css" rel="stylesheet" href="resources/css/materialize/css/materialize.min.css"  media="screen,projection"/>
+    <link type="text/css" rel="stylesheet" href="resources/css/home/home.css"/>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
 </head>
 <body>
-    <p th:text="'Hello, ' + ${name} + '!'" />
+    <div class="container">
 
-    <a href="/auth/logout">Log Out</a>
+        <nav>
+            <div class="nav-wrapper">
+                <!--<a href="/home" class="brand-logo">Logo</a>-->
+                <a href="/auth/logout" class="logout-link right">Log Out</a>
+                <!--<ul id="nav-mobile" class="left hide-on-med-and-down">
+                    <li><a href="/home">Home</a></li>
+                </ul>-->
+            </div>
+        </nav>
 
-    <script type="application/javascript" src="resources/js/home.js"></script>
+    </div>
 </body>
 </html>
