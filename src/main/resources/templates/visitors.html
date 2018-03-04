@@ -1,0 +1,102 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Armeyskiy 8B</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <link type="text/css" rel="stylesheet" href="resources/css/materialize/css/materialize.min.css"  media="screen,projection"/>
+    <link type="text/css" rel="stylesheet" href="resources/css/visitors/visitors.css"/>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+</head>
+<body>
+    <div class="container">
+
+        <nav>
+            <div class="nav-wrapper">
+                <!--<a href="/visitors" class="brand-logo">Logo</a>-->
+                <a href="/auth/logout" class="logout-link right">Log Out</a>
+                <!--<ul id="nav-mobile" class="left hide-on-med-and-down">
+                    <li><a href="/visitors">Home</a></li>
+                </ul>-->
+            </div>
+        </nav>
+
+        <form th:object="${visitorEntry}" th:action="@{/visitors}" method="post" style="margin-top: 5px;">
+            <div class="row">
+                <div class="col s4">
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <i class="material-icons prefix">drive_eta</i>
+                            <input th:field="*{vehicleNumber}" type="text" id="vrnInput" class="autocomplete">
+                            <label for="vrnInput" th:text="#{visitors.vrn}">VRN</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="input-field col s4">
+                    <select id="timeRangeSelect" th:field="*{parkingTime}">
+                        <option value="" disabled selected="selected">Choose Time Range</option>
+                        <option th:each="timeRange: ${timeRangeOptions}"
+                                th:value="${timeRange}"
+                                th:text="${timeRange}">Time Range</option>
+                    </select>
+                    <label for="timeRangeSelect" th:text="#{visitors.time-range-suffix}"/>
+                </div>
+
+                <div class="col s4">
+                    <div class="input-field">
+                        <button class="btn waves-effect waves-light" type="submit" name="action">Submit
+                            <i class="material-icons right">send</i>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </form>
+
+        <table class="striped" th:unless="${#lists.isEmpty(visitors)}">
+            <thead>
+            <tr>
+                <th>№</th>
+                <th>Vehicle Number</th>
+                <th>Entrance Time</th>
+                <th>Elapsed Time</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="visitor: ${visitors}">
+                <td th:text="${visitor.id}">Visitor Id</td>
+                <td th:text="${visitor.vehicleNumber}">Vehicle Number</td>
+                <td th:text="${visitor.entranceTime}">Entrance Time</td>
+                <td th:text="${visitor.elapsedTime}">Elapsed Time</td>
+            </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+    <script type="text/javascript" src="resources/js/vendor/jquery-3.2.1.min.js"></script>
+    <script src="resources/css/materialize/js/materialize.min.js"></script>
+
+
+    <script type="application/javascript">
+        $.get('/vehicle-registration-numbers', function(response) {
+            var vrnAutocomplete = document.querySelector('.autocomplete');
+
+            var autocompleteSuggestions = {};
+            response.forEach(function (vrn) {
+                autocompleteSuggestions[vrn] = null;
+            });
+
+            var options = { data: autocompleteSuggestions };
+            var instance = M.Autocomplete.init(vrnAutocomplete, options);
+        });
+
+        var elem = document.querySelector('select');
+        var instance = M.FormSelect.init(elem, {});
+    </script>
+</body>
+</html>

@@ -38,7 +38,7 @@ public class WebMvcSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .formLogin()
                     .loginPage("/login")
                     .loginProcessingUrl("/auth/login")
-                    .defaultSuccessUrl("/home", true)
+                    .defaultSuccessUrl("/visitors", true)
                     .failureHandler(authenticationFailureHandler())
                     .permitAll()
             .and()
