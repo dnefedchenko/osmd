@@ -1,10 +1,14 @@
 package com.freeman.model;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 /**
  * Created by Dmitriy Nefedchenko on 02.03.2018.
  */
 public enum TimeRange {
-    THIRTY_MINUTES("30"),
+    HALF_AN_HOUR("0.5"),
     ONE_HOUR("1"),
     ONE_AND_A_HALF_HOUR("1.5"),
     TWO_HOURS("2"),
@@ -23,5 +27,9 @@ public enum TimeRange {
 
     public String getRange() {
         return range;
+    }
+
+    public static List<String> getAllOptions() {
+        return Stream.of(values()).map(entry -> entry.range).collect(Collectors.toList());
     }
 }
