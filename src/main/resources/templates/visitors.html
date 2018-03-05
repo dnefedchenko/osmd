@@ -15,11 +15,7 @@
 
         <nav class="osmd-header">
             <div class="nav-wrapper">
-                <!--<a href="/visitors" class="brand-logo">Logo</a>-->
                 <a href="/auth/logout" class="logout-link right">Log Out</a>
-                <!--<ul id="nav-mobile" class="left hide-on-med-and-down">
-                    <li><a href="/visitors">Home</a></li>
-                </ul>-->
             </div>
         </nav>
 
@@ -47,7 +43,7 @@
 
                 <div class="col s4">
                     <div class="input-field">
-                        <button class="btn waves-effect waves-light" type="submit" name="action">Submit
+                        <button id="submit" class="btn waves-effect waves-light" type="submit" name="action">Submit
                             <i class="material-icons right">send</i>
                         </button>
                     </div>
@@ -80,23 +76,6 @@
 
     <script type="text/javascript" src="resources/js/vendor/jquery-3.2.1.min.js"></script>
     <script src="resources/css/materialize/js/materialize.min.js"></script>
-
-
-    <script type="application/javascript">
-        $.get('/vehicle-registration-numbers', function(response) {
-            var vrnAutocomplete = document.querySelector('.autocomplete');
-
-            var autocompleteSuggestions = {};
-            response.forEach(function (vrn) {
-                autocompleteSuggestions[vrn] = null;
-            });
-
-            var options = { data: autocompleteSuggestions };
-            var instance = M.Autocomplete.init(vrnAutocomplete, options);
-        });
-
-        var elem = document.querySelector('select');
-        var instance = M.FormSelect.init(elem, {});
-    </script>
+    <script type="text/javascript" src="resources/js/app/visitors.js"></script>
 </body>
 </html>
