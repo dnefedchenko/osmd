@@ -4,7 +4,6 @@ import com.freeman.model.VisitorEntry;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,12 +12,10 @@ import java.util.List;
  */
 @Service
 public class VisitorEntryService {
-    private DateTimeFormatter formatter;
     private List<VisitorEntry> visitors;
 
     public VisitorEntryService() {
         this.visitors = new ArrayList<>();
-        this.formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
     }
 
     public List<VisitorEntry> getVisitors() {
@@ -27,7 +24,10 @@ public class VisitorEntryService {
 
     public VisitorEntry letVisitorIn(VisitorEntry entry) {
         LocalTime entranceTime = LocalTime.now();
+        LocalTime exitTime = entranceTime.plusMinutes((long)(Double.parseDouble(entry.getParkingTime())*60));
         entry.setEntranceTime(LocalTime.of(entranceTime.getHour(), entranceTime.getMinute(), entranceTime.getSecond()));
+        entry.setExitTime(LocalTime.of(exitTime.getHour(), exitTime.getMinute(), exitTime.getSecond()));
+        entry.setElapsedTimeMinutes("0");
         this.visitors.add(entry);
         return entry;
     }

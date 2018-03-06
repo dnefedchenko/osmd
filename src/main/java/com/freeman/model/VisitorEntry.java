@@ -9,18 +9,22 @@ public class VisitorEntry {
     private String id;
     private String vehicleNumber;
     private LocalTime entranceTime;
+    private LocalTime exitTime;
     private String elapsedTime;
     private String parkingTime;
+    private ParkingStatus status;
 
     public VisitorEntry() {
-
+        this.status = ParkingStatus.ALLOWED;
     }
 
-    public VisitorEntry(String id, String vehicleNumber, LocalTime entranceTime, String elapsedTime) {
+    public VisitorEntry(String id, String vehicleNumber, LocalTime entranceTime, LocalTime exitTime, String elapsedTime) {
         this.id = id;
         this.vehicleNumber = vehicleNumber;
         this.entranceTime = entranceTime;
+        this.exitTime = exitTime;
         this.elapsedTime = elapsedTime;
+        this.status = ParkingStatus.ALLOWED;
     }
 
     public String getId() {
@@ -47,11 +51,19 @@ public class VisitorEntry {
         this.entranceTime = entranceTime;
     }
 
+    public LocalTime getExitTime() {
+        return exitTime;
+    }
+
+    public void setExitTime(LocalTime exitTime) {
+        this.exitTime = exitTime;
+    }
+
     public String getElapsedTime() {
         return elapsedTime;
     }
 
-    public void setElapsedTime(String elapsedTime) {
+    public void setElapsedTimeMinutes(String elapsedTime) {
         this.elapsedTime = elapsedTime;
     }
 
@@ -63,14 +75,24 @@ public class VisitorEntry {
         this.parkingTime = parkingTime;
     }
 
+    public ParkingStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(ParkingStatus status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
         return "VisitorEntry{" +
                 "id='" + id + '\'' +
                 ", vehicleNumber='" + vehicleNumber + '\'' +
                 ", entranceTime=" + entranceTime +
-                ", elapsedTime=" + elapsedTime +
-                ", parkingTime=" + parkingTime +
+                ", exitTime=" + exitTime +
+                ", elapsedTime='" + elapsedTime + '\'' +
+                ", parkingTime='" + parkingTime + '\'' +
+                ", status=" + status +
                 '}';
     }
 }

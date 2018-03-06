@@ -58,7 +58,10 @@
                 <th>№</th>
                 <th>Vehicle Number</th>
                 <th>Entrance Time</th>
+                <th>Exit Time</th>
                 <th>Elapsed Time</th>
+                <th>Status</th>
+                <th>Action</th>
             </tr>
             </thead>
 
@@ -67,7 +70,14 @@
                 <td th:text="${rowInfo.count}">Visitor Id</td>
                 <td th:text="${visitor.vehicleNumber}">Vehicle Number</td>
                 <td th:text="${visitor.entranceTime}">Entrance Time</td>
+                <td th:text="${visitor.exitTime}">Exit Time</td>
                 <td th:text="${visitor.elapsedTime}">Elapsed Time</td>
+                <td th:text="${visitor.status}">Status</td>
+                <td>
+                    <button class="btn waves-effect waves-light" type="button" name="exit">Exit
+                        <i class="material-icons right">exit_to_app</i>
+                    </button>
+                </td>
             </tr>
             </tbody>
         </table>

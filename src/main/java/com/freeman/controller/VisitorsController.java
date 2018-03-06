@@ -34,7 +34,7 @@ public class VisitorsController {
 
     @ModelAttribute("visitor")
     public VisitorEntry visitorEntry() {
-        return new VisitorEntry("", "", null, "");
+        return new VisitorEntry();
     }
 
     @ModelAttribute("visitors")
@@ -49,7 +49,7 @@ public class VisitorsController {
 
     @PostMapping
     public String letVisitorIn(VisitorEntry entry) {
-        VisitorEntry visitor = visitorEntryService.letVisitorIn(entry);
+        visitorEntryService.letVisitorIn(entry);
         return VISITORS_VIEW;
     }
 }
