@@ -37,10 +37,11 @@ var validateVisitorsForm = function (valueToBeValidated) {
     }
 };
 
-document.querySelector('.autocomplete')
-    .addEventListener('blur', function (event) {
-        validateVisitorsForm(event.target.value);
-    });
+var autocomplete = document.querySelector('.autocomplete');
+
+autocomplete.addEventListener('keyup', function (event) {
+    validateVisitorsForm(event.target.value);
+});
 
 this.initTimeRangeSelector();
 this.initVehicleAutocomplete();
