@@ -5,8 +5,6 @@ import com.freeman.model.VisitorEntry;
 import com.freeman.service.VisitorEntryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -45,19 +43,13 @@ public class VisitorsController {
     }
 
     @GetMapping
-    public String showVisitorsPage(Model model) {
-        /*model.addAttribute("timeRangeOptions", TimeRange.getAllOptions());
-        model.addAttribute("visitorEntry", new VisitorEntry("", "", null, ""));
-        model.addAttribute("visitors", this.visitorEntryService.getVisitors());*/
+    public String showVisitorsPage() {
         return VISITORS_VIEW;
     }
 
     @PostMapping
-    public String letVisitorIn(Model model, VisitorEntry entry, BindingResult bindingResult) {
+    public String letVisitorIn(VisitorEntry entry) {
         VisitorEntry visitor = visitorEntryService.letVisitorIn(entry);
-        /*model.addAttribute("timeRangeOptions", TimeRange.getAllOptions());
-        model.addAttribute("visitorEntry", new VisitorEntry("", "", null, ""));
-        model.addAttribute("visitors", this.visitorEntryService.getVisitors());*/
         return VISITORS_VIEW;
     }
 }
