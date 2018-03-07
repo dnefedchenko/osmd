@@ -15,7 +15,7 @@
 
         <nav class="osmd-header">
             <div class="nav-wrapper">
-                <a href="/auth/logout" class="logout-link right">Log Out</a>
+                <a href="/auth/logout" class="logout-link right" onclick="disconnectStompClient()">Log Out</a>
             </div>
         </nav>
 
@@ -71,8 +71,8 @@
                 <td th:text="${visitor.vehicleNumber}">Vehicle Number</td>
                 <td th:text="${visitor.entranceTime}">Entrance Time</td>
                 <td th:text="${visitor.exitTime}">Exit Time</td>
-                <td th:text="${visitor.elapsedTime}">Elapsed Time</td>
-                <td th:text="${visitor.status}">Status</td>
+                <td th:text="${visitor.elapsedTime}" class="elapsedTimeCell" >Elapsed Time</td>
+                <td th:text="${visitor.status}" class="statusCell">Status</td>
                 <td>
                     <button class="btn waves-effect waves-light" type="button" name="exit">Exit
                         <i class="material-icons right">exit_to_app</i>
@@ -85,6 +85,9 @@
     </div>
 
     <script type="text/javascript" src="resources/js/vendor/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="resources/js/vendor/sockjs.min.js"></script>
+    <script type="text/javascript" src="resources/js/vendor/stomp.min.js"></script>
+
     <script src="resources/css/materialize/js/materialize.min.js"></script>
     <script type="text/javascript" src="resources/js/app/visitors.js"></script>
 </body>

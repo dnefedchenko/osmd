@@ -1,6 +1,8 @@
 package com.freeman.service;
 
 import com.freeman.model.VisitorEntry;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalTime;
@@ -13,9 +15,12 @@ import java.util.List;
 @Service
 public class VisitorEntryService {
     private List<VisitorEntry> visitors;
+    private SimpMessagingTemplate messagingTemplate;
 
-    public VisitorEntryService() {
+    @Autowired
+    public VisitorEntryService(SimpMessagingTemplate messagingTemplate) {
         this.visitors = new ArrayList<>();
+        this.messagingTemplate = messagingTemplate;
     }
 
     public List<VisitorEntry> getVisitors() {
@@ -29,6 +34,12 @@ public class VisitorEntryService {
         entry.setExitTime(LocalTime.of(exitTime.getHour(), exitTime.getMinute(), exitTime.getSecond()));
         entry.setElapsedTimeMinutes("0");
         this.visitors.add(entry);
+        startTimeTracking(entry);
         return entry;
+    }
+
+    private void startTimeTracking(VisitorEntry visitor) {
+        ParkingTimeTask task = new ParkingTimeTask(visitor, messagingTemplate);
+        task.startTimeTracking();
     }
 }
