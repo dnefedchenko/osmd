@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 /**
@@ -32,20 +33,20 @@ public class WebMvcSecurityConfiguration extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/auth/login").permitAll()
-                .antMatchers(HttpMethod.GET, "/login**").permitAll()
+                .antMatchers(HttpMethod.GET, "/").permitAll()
                 .anyRequest().authenticated()
             .and()
                 .formLogin()
-                    .loginPage("/login")
+                    .loginPage("/")
                     .loginProcessingUrl("/auth/login")
-                    .defaultSuccessUrl("/visitors", true)
+                    .successHandler(authenticationSuccessHandler())
                     .failureHandler(authenticationFailureHandler())
                     .permitAll()
             .and()
                 .logout()
                     .logoutUrl("/logout")
                     .logoutRequestMatcher(new AntPathRequestMatcher("/auth/logout", HttpMethod.GET.name()))
-                    .logoutSuccessUrl("/login")
+                    .logoutSuccessUrl("/")
                     .invalidateHttpSession(true)
                     .deleteCookies("JSESSIONID");
     }
@@ -62,5 +63,9 @@ public class WebMvcSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private AuthenticationFailureHandler authenticationFailureHandler() {
         return new OsmdAuthenticationFailureHandler(this.messageSource);
+    }
+
+    private AuthenticationSuccessHandler authenticationSuccessHandler() {
+        return new OsmdAuthenticationSuccessHandler();
     }
 }
