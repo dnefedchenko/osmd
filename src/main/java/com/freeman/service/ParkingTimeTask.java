@@ -52,11 +52,4 @@ public class ParkingTimeTask {
             }
         }, 0, 5000);
     }
-
-    public static void main(String[] args) {
-        VisitorEntry visitor = new VisitorEntry();
-        visitor.setParkingTime("0.05");
-        ParkingTimeTask parkingTimeTask = new ParkingTimeTask(visitor, new SimpMessagingTemplate(null));
-        parkingTimeTask.startTimeTracking();
-    }
 }

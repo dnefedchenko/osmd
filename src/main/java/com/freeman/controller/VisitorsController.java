@@ -48,8 +48,8 @@ public class VisitorsController {
     }
 
     @PostMapping
-    public String letVisitorIn(VisitorEntry entry) {
+    public void letVisitorIn(VisitorEntry entry) {
         visitorEntryService.letVisitorIn(entry);
-        return VISITORS_VIEW;
+//        return VISITORS_VIEW;
     }
 }

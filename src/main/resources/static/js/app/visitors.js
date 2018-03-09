@@ -48,13 +48,11 @@ autocomplete.addEventListener('keyup', function (event) {
 
 var updateElapsedTime = function (vehicleId, secondsPassed) {
     var selectorQuery = 'tr:contains("'+vehicleId+'")';
-    console.log($(selectorQuery)[0].cells[4]);
     $(selectorQuery)[0].cells[4].innerHTML = secondsPassed;
 };
 
 var updateStatus = function (vehicleId, status) {
     var selectorQuery = 'tr:contains("'+vehicleId+'")';
-    console.log($(selectorQuery)[0].cells[5]);
     $(selectorQuery)[0].cells[5].innerHTML = status;
 };
 
