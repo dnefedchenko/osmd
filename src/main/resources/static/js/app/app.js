@@ -2,8 +2,6 @@
 
 Vue.component('osmd-app-component', {
     template: '<div>' +
-                '<p v-if="isAuthenticated">Protected content goes here</p>' +
-
                 '<form v-if="!isAuthenticated">' +
                     '<div>' +
                         '<label for="username">Username:&nbsp;</label>' +
@@ -17,6 +15,8 @@ Vue.component('osmd-app-component', {
 
                     '<button type="button" v-on:click="doLogin">Sign In</button>' +
                 '</form>' +
+
+                '<p v-if="isAuthenticated">Protected content goes here</p>' +
               '</div>',
     data: function () {
         return {
