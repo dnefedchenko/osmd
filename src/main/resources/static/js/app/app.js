@@ -5,7 +5,16 @@ var data = {
 };
 
 Vue.component('osmd-app-component', {
-    template: '<p v-if="isAuthenticated">Login form goes here!</p>',
+    template: '<div>' +
+                '<p v-if="isAuthenticated">Protected content goes here</p>' +
+
+                '<form v-if="!isAuthenticated">' +
+                    '<div>' +
+                        '<input type="text" id="username">' +
+                        '<label for="username">Username</label>' +
+                    '</div>' +
+                '</form>' +
+              '</div>',
     data: function () {
         return data;
     }
