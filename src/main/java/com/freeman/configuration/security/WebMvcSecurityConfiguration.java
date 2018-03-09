@@ -51,7 +51,8 @@ public class WebMvcSecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .logoutRequestMatcher(new AntPathRequestMatcher("/auth/logout", HttpMethod.GET.name()))
                     .logoutSuccessUrl("/")
                     .invalidateHttpSession(true)
-                    .deleteCookies("JSESSIONID");
+                    .deleteCookies("JSESSIONID")
+            .and().csrf().disable();
     }
 
     @Override

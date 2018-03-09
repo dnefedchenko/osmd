@@ -17,6 +17,6 @@ import java.security.Principal;
 public class UsersController {
     @GetMapping(value = "/me")
     public UserDetails getCurrentPrincipal(@AuthenticationPrincipal Principal principal) {
-        return User.withUsername(principal.getName()).password("").build();
+        return User.withUsername(principal.getName()).password("").authorities("ROLE_USER").build();
     }
 }
