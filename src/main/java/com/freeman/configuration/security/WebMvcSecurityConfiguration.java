@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -31,6 +32,8 @@ public class WebMvcSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint())
+                .and()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/auth/login").permitAll()
                 .antMatchers(HttpMethod.GET, "/").permitAll()
@@ -67,5 +70,9 @@ public class WebMvcSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private AuthenticationSuccessHandler authenticationSuccessHandler() {
         return new OsmdAuthenticationSuccessHandler();
+    }
+
+    private AuthenticationEntryPoint restAuthenticationEntryPoint() {
+        return new RestAutheticationEntryPoint();
     }
 }
