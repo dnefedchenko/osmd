@@ -1,5 +1,6 @@
 package com.freeman.controller;
 
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,6 +18,6 @@ import java.security.Principal;
 public class UsersController {
     @GetMapping(value = "/me")
     public UserDetails getCurrentPrincipal(@AuthenticationPrincipal Principal principal) {
-        return User.withUsername(principal.getName()).password("").authorities("ROLE_USER").build();
+        return (User)((UsernamePasswordAuthenticationToken)principal).getPrincipal();
     }
 }

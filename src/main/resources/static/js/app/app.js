@@ -30,6 +30,7 @@ Vue.component('osmd-app-component', {
 
         var promise = $.get('/users/me', function(response) {
             console.log(response);
+            that.isAuthenticated = true;
         });
 
         promise.fail(function (error) {
