@@ -3,17 +3,25 @@
 Vue.component('osmd-app-component', {
     template: '<div>' +
                 '<form v-if="!isAuthenticated">' +
-                    '<div>' +
-                        '<label for="username">Username:&nbsp;</label>' +
-                        '<input type="text" id="username" v-model="username">' +
-                    '</div>' +
+                    '<md-card class="md-layout-item md-size-50 md-small-size-100">' +
+                        '<md-card-header>' +
+                            '<div class="md-title">Sign In</div>' +
+                        '</md-card-header>' +
 
-                    '<div>' +
-                        '<label for="password">Password:&nbsp;</label>' +
-                        '<input type="password" id="password" v-model="password">' +
-                    '</div>' +
+                        '<md-card-content>' +
+                            '<md-field>' +
+                                '<label for="username">Username:&nbsp;</label>' +
+                                '<md-input type="text" id="username" v-model="username"></md-input>' +
+                            '</md-field>' +
 
-                    '<button type="button" v-on:click="doLogin">Sign In</button>' +
+                            '<md-field>' +
+                                '<label for="password">Password:&nbsp;</label>' +
+                                '<md-input type="password" id="password" v-model="password"></md-input>' +
+                            '</md-field>'+
+
+                            '<md-button class="md-raised md-primary" v-on:click="doLogin">Sign In</md-button>' +
+                        '</md-card-content>' +
+                    '</md-card>' +
                 '</form>' +
 
                 '<p v-if="isAuthenticated">Protected content goes here</p>' +
@@ -52,6 +60,8 @@ Vue.component('osmd-app-component', {
         }
     }
 });
+
+Vue.use(VueMaterial.default);
 
 var vm = new Vue({
     el: '#visitorsApp'
