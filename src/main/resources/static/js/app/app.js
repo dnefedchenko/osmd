@@ -36,7 +36,7 @@ Vue.component('osmd-app-component', {
                     '</md-card>\n' +
                 '</form>\n' +
 
-                '<p v-if="isAuthenticated">Protected content goes here</p>' +
+                '<osmd-content v-if="isAuthenticated"></osmd-content>' +
               '</div>',
     data: function () {
         return {

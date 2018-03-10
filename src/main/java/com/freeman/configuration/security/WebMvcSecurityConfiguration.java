@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 /**
@@ -48,8 +49,8 @@ public class WebMvcSecurityConfiguration extends WebSecurityConfigurerAdapter {
             .and()
                 .logout()
                     .logoutUrl("/logout")
-                    .logoutRequestMatcher(new AntPathRequestMatcher("/auth/logout", HttpMethod.GET.name()))
-                    .logoutSuccessUrl("/")
+                    .logoutRequestMatcher(new AntPathRequestMatcher("/auth/logout", HttpMethod.POST.name()))
+                    .logoutSuccessHandler(logoutSuccessHandler())
                     .invalidateHttpSession(true)
                     .deleteCookies("JSESSIONID")
             .and().csrf().disable();
@@ -75,5 +76,9 @@ public class WebMvcSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private AuthenticationEntryPoint restAuthenticationEntryPoint() {
         return new RestAutheticationEntryPoint();
+    }
+
+    private LogoutSuccessHandler logoutSuccessHandler() {
+        return new OsmdLogoutSuccessHandler();
     }
 }
