@@ -1,28 +1,40 @@
 'use strict';
 
 Vue.component('osmd-app-component', {
-    template: '<div>' +
-                '<form v-if="!isAuthenticated">' +
-                    '<md-card class="md-layout-item md-size-50 md-small-size-100">' +
-                        '<md-card-header>' +
-                            '<div class="md-title">Sign In</div>' +
-                        '</md-card-header>' +
+    template: '<div>\n' +
+                '<form novalidate class="md-layout" v-if="!isAuthenticated">\n' +
+                    '<md-card class="md-layout-item md-size-20 md-small-size-100 login-wrapper">' +
+                        '<md-card-header>\n' +
+                            '<div id="login-header" class="md-title">Sign In</div>\n' +
+                        '</md-card-header>\n' +
 
-                        '<md-card-content>' +
-                            '<md-field>' +
-                                '<label for="username">Username:&nbsp;</label>' +
-                                '<md-input type="text" id="username" v-model="username"></md-input>' +
-                            '</md-field>' +
+                        '<md-card-content>\n' +
+                            '<div class="md-layout">\n' +
+                                '<div class="md-layout-item md-small-size-100">\n' +
+                                    '<md-field>\n' +
+                                        '<label for="username">Username</label>\n' +
+                                        '<md-input name="username" id="username" v-model="username"/>\n' +
+                                    '</md-field>\n' +
+                                '</div>' +
+                            '</div>\n' +
 
-                            '<md-field>' +
-                                '<label for="password">Password:&nbsp;</label>' +
-                                '<md-input type="password" id="password" v-model="password"></md-input>' +
-                            '</md-field>'+
+                            '<div class="md-layout">\n' +
+                                '<div class="md-layout-item md-small-size-100">\n' +
+                                    '<md-field>\n' +
+                                        '<label for="password">Last Name</label>\n' +
+                                        '<md-input type="password" name="password" id="password" v-model="password" />\n' +
+                                    '</md-field>\n' +
+                                '</div>\n' +
+                            '</div>\n' +
 
-                            '<md-button class="md-raised md-primary" v-on:click="doLogin">Sign In</md-button>' +
-                        '</md-card-content>' +
-                    '</md-card>' +
-                '</form>' +
+                            '<div class="md-layout">\n' +
+                                '<div class="md-layout-item md-small-size-100">\n' +
+                                    '<md-button id="login-button" class="md-raised md-primary" v-on:click="doLogin">Sign In</md-button>' +
+                                '</div>\n' +
+                            '</div>\n' +
+                        '</md-card-content>\n' +
+                    '</md-card>\n' +
+                '</form>\n' +
 
                 '<p v-if="isAuthenticated">Protected content goes here</p>' +
               '</div>',
