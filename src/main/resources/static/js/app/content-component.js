@@ -3,14 +3,19 @@ Vue.component('osmd-content', {
                 '<h3 class="md-title"  style="flex: 1">Visitors</h3>' +
                 '<md-button v-on:click="logout">Log Out</md-button>' +
               '</md-toolbar>',
+    data: function() {
+        return {
+
+        }
+    },
     methods: {
         logout: function () {
             var logoutPromise = $.post('/auth/logout', function (success) {
-                console.log(success);
+                store.setAuthenticated(false);
             });
 
             logoutPromise.fail(function (error) {
-                console.log(error);
+                store.setAuthenticated(false);
             });
         }
     }

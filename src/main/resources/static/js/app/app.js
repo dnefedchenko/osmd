@@ -1,5 +1,17 @@
 'use strict';
 
+const store = {
+    state: {
+        isAuthenticated: false
+    },
+    setAuthenticated: function (value) {
+        this.state.isAuthenticated = value;
+    },
+    isAuthenticated: function () {
+        return this.state.isAuthenticated;
+    }
+};
+
 Vue.component('osmd-app-component', {
     template: '<div>\n' +
                 '<form novalidate class="md-layout" v-if="!isAuthenticated">\n' +
@@ -40,35 +52,35 @@ Vue.component('osmd-app-component', {
               '</div>',
     data: function () {
         return {
-            isAuthenticated: false,
             username: '',
-            password: ''
+            password: '',
+            state: store.state
         };
     },
     created: function () {
-        var that = this;
-
-        var promise = $.get('/users/me', function(response) {
-            console.log(response);
-            that.isAuthenticated = true;
+        var promise = $.get('/users/me', function(success) {
+            store.setAuthenticated(true);
         });
 
         promise.fail(function (error) {
-            that.isAuthenticated = error.status !== 401;
+            store.setAuthenticated(false);
         });
     },
     methods: {
         doLogin: function () {
-            var that = this;
             var formData = 'username='+this.username+'&password='+this.password;
-            var loginPromise = $.post('/auth/login', formData, function (response) {
-                that.isAuthenticated = true;
-                console.log(response);
+            var loginPromise = $.post('/auth/login', formData, function (success) {
+                store.setAuthenticated(true);
             });
 
             loginPromise.fail(function (error) {
-                this.isAuthenticated = false;
+                store.setAuthenticated(false);
             });
+        }
+    },
+    computed: {
+        isAuthenticated: function () {
+            return store.isAuthenticated();
         }
     }
 });
