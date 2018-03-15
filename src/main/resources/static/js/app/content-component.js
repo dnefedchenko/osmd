@@ -28,7 +28,9 @@ Vue.component('osmd-content', {
                             '</div>' +
 
                             '<div class="md-layout-item">' +
-                                '<md-button type="button" class="md-raised md-primary" @click="letIn">Let In&nbsp;<md-icon>forward</md-icon></md-button>' +
+                                '<md-button type="button" class="md-raised md-primary" @click="letIn" v-bind:disabled="!selectedVehicle">Let In&nbsp;' +
+                                    '<md-icon>forward</md-icon>' +
+                                '</md-button>' +
                             '</div>' +
                         '</form>' +
 
@@ -61,7 +63,7 @@ Vue.component('osmd-content', {
     data: function() {
         return {
             selectedVehicle: null,
-            selectedTime: null,
+            selectedTime: '0.5',
             vehicleNumbers: [],
             timeRangeOptions: [
                 '0.5', '1.0', '1.5', '2.0', '2.5', '3.0', '3.5', '4.0', '4.5', '5.0'
@@ -122,6 +124,7 @@ Vue.component('osmd-content', {
                     elapsedTime: '5',
                     status: 'ALLOWED'
                 });
+            this.selectedVehicle = '';
         },
         letOut: function () {
             console.log('Letting Out');
