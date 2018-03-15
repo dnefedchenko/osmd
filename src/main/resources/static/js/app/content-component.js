@@ -11,21 +11,22 @@ Vue.component('osmd-content', {
 
                     '<form class="md-layout-item md-layout md-gutter md-alignment-center-left">' +
                         '<div class="md-layout-item">' +
-                            '<md-field>' +
+                            '<md-autocomplete v-model="selectedVehicle" :md-options="vehicles">' +
                                 '<label>Vehicle Registration Number</label>' +
-                                '<md-input></md-input>' +
-                            '</md-field>' +
+                            '</md-autocomplete>' +
                         '</div>' +
 
                         '<div class="md-layout-item">' +
                             '<md-field>' +
-                                '<label>Vehicle Registration Number</label>' +
-                                '<md-input></md-input>' +
+                                '<label for="timeRangeSelect">Time Range</label>' +
+                                '<md-select name="timeRangeSelect" id="timeRangeSelect" v-model="selectedTime">' +
+                                    '<md-option v-for="timeRange in timeRangeOptions" v-bind:value="timeRange">{{timeRange}}</md-option>' +
+                                '</md-select>' +
                             '</md-field>' +
                         '</div>' +
 
                         '<div class="md-layout-item">' +
-                            '<md-button type="button" class="md-raised md-primary">Let In&nbsp;<md-icon>forward</md-icon></md-button>' +
+                            '<md-button type="button" class="md-raised md-primary" @click="letIn">Let In&nbsp;<md-icon>forward</md-icon></md-button>' +
                         '</div>' +
                     '</form>' +
 
@@ -36,8 +37,20 @@ Vue.component('osmd-content', {
               '</div>',
     data: function() {
         return {
-
+            selectedVehicle: null,
+            selectedTime: null,
+            vehicles: [],
+            timeRangeOptions: [
+                '0.5', '1.0', '1.5', '2.0', '2.5', '3.0', '3.5', '4.0', '4.5', '5.0'
+            ]
         }
+    },
+    created: function() {
+        var self = this;
+
+        $.get('/vehicle-registration-numbers', function(response) {
+            self.vehicles = response;
+        });
     },
     methods: {
         logout: function () {
@@ -48,6 +61,9 @@ Vue.component('osmd-content', {
             logoutPromise.fail(function (error) {
                 store.setAuthenticated(false);
             });
+        },
+        letIn: function () {
+            console.log('VRN is: ' + this.selectedVehicle + ' time range is: ' + this.selectedTime);
         }
     }
 });
