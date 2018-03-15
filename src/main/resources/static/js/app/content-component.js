@@ -45,6 +45,9 @@ Vue.component('osmd-content', {
                                     '<md-table-cell md-label="Exit Time">{{item.exitTime}}</md-table-cell>' +
                                     '<md-table-cell md-label="Elapsed Time">{{item.elapsedTime}}</md-table-cell>' +
                                     '<md-table-cell md-label="Status">{{item.status}}</md-table-cell>' +
+                                    '<md-table-cell md-label="Action">' +
+                                        '<md-button type="button" class="md-raised md-primary" @click="letOut">Let out&nbsp;<md-icon>forward</md-icon></md-button>' +
+                                    '</md-table-cell>' +
                                 '</md-table-row>' +
                             '</md-table>' +
                         '</div>' +
@@ -110,6 +113,18 @@ Vue.component('osmd-content', {
         },
         letIn: function () {
             console.log('VRN is: ' + this.selectedVehicle + ' time range is: ' + this.selectedTime);
+            this.vehicles.push(
+                {
+                    id: 3,
+                    vrn: this.selectedVehicle,
+                    entranceTime: '12:30:00',
+                    exitTime: '13:30:00',
+                    elapsedTime: '5',
+                    status: 'ALLOWED'
+                });
+        },
+        letOut: function () {
+            console.log('Letting Out');
         }
     }
 });

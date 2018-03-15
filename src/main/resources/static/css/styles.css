@@ -18,6 +18,8 @@
 }
 
 .md-content {
-    display: inline-table;
+    display: inline-block;
     padding: 15px;
+    max-height: 50%;
+    min-height: 30%;
 }
