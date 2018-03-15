@@ -34,7 +34,7 @@ Vue.component('osmd-content', {
                             '</div>' +
                         '</form>' +
 
-                        '<div class="md-layout">' +
+                        '<div class="md-layout" v-if="anyVehiclesIn">' +
                             '<md-table class="md-layout-item" v-model="vehicles" md-card>' +
                                 '<md-table-toolbar>' +
                                     '<h1 class="md-title">Vehicles In The Yard</h1>' +
@@ -68,32 +68,7 @@ Vue.component('osmd-content', {
             timeRangeOptions: [
                 '0.5', '1.0', '1.5', '2.0', '2.5', '3.0', '3.5', '4.0', '4.5', '5.0'
             ],
-            vehicles: [
-                {
-                    id: 1,
-                    vrn: 'BH0640BO',
-                    entranceTime: '12:30:00',
-                    exitTime: '13:30:00',
-                    elapsedTime: '5',
-                    status: 'ALLOWED'
-                },
-                {
-                    id: 2,
-                    vrn: 'BH2657EX',
-                    entranceTime: '12:30:00',
-                    exitTime: '13:30:00',
-                    elapsedTime: '5',
-                    status: 'ALLOWED'
-                },
-                {
-                    id: 3,
-                    vrn: 'BH5492BX',
-                    entranceTime: '12:30:00',
-                    exitTime: '13:30:00',
-                    elapsedTime: '5',
-                    status: 'ALLOWED'
-                }
-            ]
+            vehicles: []
         }
     },
     created: function() {
@@ -102,6 +77,11 @@ Vue.component('osmd-content', {
         $.get('/vehicle-registration-numbers', function(response) {
             self.vehicleNumbers = response;
         });
+    },
+    computed: {
+        anyVehiclesIn: function () {
+            return this.vehicles.length;
+        }
     },
     methods: {
         logout: function () {
@@ -115,15 +95,23 @@ Vue.component('osmd-content', {
         },
         letIn: function () {
             console.log('VRN is: ' + this.selectedVehicle + ' time range is: ' + this.selectedTime);
-            this.vehicles.push(
-                {
-                    id: 3,
-                    vrn: this.selectedVehicle,
-                    entranceTime: '12:30:00',
-                    exitTime: '13:30:00',
-                    elapsedTime: '5',
-                    status: 'ALLOWED'
-                });
+            var visitor = {
+                id: 3,
+                vrn: this.selectedVehicle,
+                entranceTime: '12:30:00',
+                exitTime: '13:30:00',
+                elapsedTime: '5',
+                status: 'ALLOWED'
+            };
+
+            var visitorPromise = $.post('/visitors', visitor, function (response) {
+                this.vehicles.unshift(visitor);
+            });
+
+            visitorPromise.fail(function (error) {
+                console.log(error);
+            });
+
             this.selectedVehicle = '';
         },
         letOut: function () {
