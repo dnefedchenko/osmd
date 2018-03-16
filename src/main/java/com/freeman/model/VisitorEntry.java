@@ -8,8 +8,8 @@ import java.time.LocalTime;
 public class VisitorEntry {
     private String id;
     private String vehicleNumber;
-    private LocalTime entranceTime;
-    private LocalTime exitTime;
+    private String entranceTime;
+    private String exitTime;
     private String elapsedTime;
     private String parkingTime;
     private ParkingStatus status;
@@ -18,7 +18,7 @@ public class VisitorEntry {
         this.status = ParkingStatus.ALLOWED;
     }
 
-    public VisitorEntry(String id, String vehicleNumber, LocalTime entranceTime, LocalTime exitTime, String elapsedTime) {
+    public VisitorEntry(String id, String vehicleNumber, String entranceTime, String exitTime, String elapsedTime) {
         this.id = id;
         this.vehicleNumber = vehicleNumber;
         this.entranceTime = entranceTime;
@@ -43,19 +43,19 @@ public class VisitorEntry {
         this.vehicleNumber = vehicleNumber;
     }
 
-    public LocalTime getEntranceTime() {
+    public String getEntranceTime() {
         return entranceTime;
     }
 
-    public void setEntranceTime(LocalTime entranceTime) {
+    public void setEntranceTime(String entranceTime) {
         this.entranceTime = entranceTime;
     }
 
-    public LocalTime getExitTime() {
+    public String getExitTime() {
         return exitTime;
     }
 
-    public void setExitTime(LocalTime exitTime) {
+    public void setExitTime(String exitTime) {
         this.exitTime = exitTime;
     }
 

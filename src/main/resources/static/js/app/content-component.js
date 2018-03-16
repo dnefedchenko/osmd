@@ -29,7 +29,7 @@ Vue.component('osmd-content', {
 
                             '<div class="md-layout-item">' +
                                 '<md-button type="button" class="md-raised md-primary" @click="letIn" v-bind:disabled="!selectedVehicle">Let In&nbsp;' +
-                                    '<md-icon>forward</md-icon>' +
+                                    '<md-icon>flight_land</md-icon>' +
                                 '</md-button>' +
                             '</div>' +
                         '</form>' +
@@ -42,13 +42,15 @@ Vue.component('osmd-content', {
 
                                 '<md-table-row slot="md-table-row" slot-scope="{ item }">' +
                                     '<md-table-cell md-label="#" md-numeric>{{item.id}}</md-table-cell>' +
-                                    '<md-table-cell md-label="Vehicle Number">{{item.vrn}}</md-table-cell>' +
+                                    '<md-table-cell md-label="Vehicle Number">{{item.vehicleNumber}}</md-table-cell>' +
                                     '<md-table-cell md-label="Entrance Time">{{item.entranceTime}}</md-table-cell>' +
                                     '<md-table-cell md-label="Exit Time">{{item.exitTime}}</md-table-cell>' +
-                                    '<md-table-cell md-label="Elapsed Time">{{item.elapsedTime}}</md-table-cell>' +
+                                    '<md-table-cell md-label="Elapsed Time(min)">{{item.elapsedTime}}</md-table-cell>' +
                                     '<md-table-cell md-label="Status">{{item.status}}</md-table-cell>' +
                                     '<md-table-cell md-label="Action">' +
-                                        '<md-button type="button" class="md-raised md-primary" @click="letOut">Let out&nbsp;<md-icon>forward</md-icon></md-button>' +
+                                        '<md-button type="button" class="md-raised md-primary" @click="letOut">Let out&nbsp;' +
+                                            '<md-icon>flight_takeoff</md-icon>' +
+                                        '</md-button>' +
                                     '</md-table-cell>' +
                                 '</md-table-row>' +
                             '</md-table>' +
@@ -94,24 +96,23 @@ Vue.component('osmd-content', {
             });
         },
         letIn: function () {
-            console.log('VRN is: ' + this.selectedVehicle + ' time range is: ' + this.selectedTime);
+            var self = this;
+
             var visitor = {
-                id: 3,
-                vrn: this.selectedVehicle,
-                entranceTime: '12:30:00',
-                exitTime: '13:30:00',
-                elapsedTime: '5',
-                status: 'ALLOWED'
+                vehicleNumber: this.selectedVehicle,
+                parkingTime: this.selectedTime
             };
 
             var visitorPromise = $.post('/visitors', visitor, function (response) {
-                this.vehicles.unshift(visitor);
+                self.vehicles.unshift(response);
+                self.resetSelectedVehicle();
             });
 
             visitorPromise.fail(function (error) {
                 console.log(error);
             });
-
+        },
+        resetSelectedVehicle: function () {
             this.selectedVehicle = '';
         },
         letOut: function () {
