@@ -65,20 +65,22 @@ Vue.component('osmd-content', {
     data: function() {
         return {
             selectedVehicle: null,
-            selectedTime: '0.5',
+            selectedTime: '0.05',
             vehicleNumbers: [],
             timeRangeOptions: [
-                '0.5', '1.0', '1.5', '2.0', '2.5', '3.0', '3.5', '4.0', '4.5', '5.0'
+                '0.05', '0.5', '1.0', '1.5', '2.0', '2.5', '3.0', '3.5', '4.0', '4.5', '5.0'
             ],
-            vehicles: []
+            vehicles: [],
+            stompClient: null,
+            stompSubscription: null
         }
     },
     created: function() {
-        var self = this;
-
-        $.get('/vehicle-registration-numbers', function(response) {
-            self.vehicleNumbers = response;
-        });
+        this.loadVehicleRegistrationNumbers();
+        this.openSockJsConnection();
+    },
+    destroyed: function() {
+        this.disconnectStompClient();
     },
     computed: {
         anyVehiclesIn: function () {
@@ -87,6 +89,7 @@ Vue.component('osmd-content', {
     },
     methods: {
         logout: function () {
+            var self = this;
             var logoutPromise = $.post('/auth/logout', function (success) {
                 store.setAuthenticated(false);
             });
@@ -112,11 +115,43 @@ Vue.component('osmd-content', {
                 console.log(error);
             });
         },
+        loadVehicleRegistrationNumbers: function() {
+            var self = this;
+            $.get('/vehicle-registration-numbers', function(response) {
+                self.vehicleNumbers = response;
+            });
+        },
+        openSockJsConnection: function () {
+            var self = this;
+            var socket = new SockJS('/parking-time-tracker');
+            self.stompClient = Stomp.over(socket);
+            self.stompClient.connect({}, function (frame) {
+                self.stompSubscription = self.stompClient.subscribe('/topic', function (message) {
+                    var payload = JSON.parse(message.body);
+                    self.updateVehicleRecord(payload);
+                })
+            });
+        },
+        updateVehicleRecord: function (updatedVehicleInfo) {
+            this.vehicles.forEach(vehicle => {
+                if (vehicle.vehicleNumber === updatedVehicleInfo.id) {
+                    vehicle.elapsedTime = updatedVehicleInfo['elapsedTime'];
+                    vehicle.status = updatedVehicleInfo['status'];
+                }
+            });
+        },
+        disconnectStompClient: function() {
+            var self = this;
+            if (self.stompClient !== null) {
+                self.stompSubscription.unsubscribe();
+                self.stompClient.disconnect();
+            }
+        },
         resetSelectedVehicle: function () {
             this.selectedVehicle = '';
         },
         letOut: function () {
-            console.log('Letting Out');
+            // TODO: stop timer if not already stopped
         }
     }
 });

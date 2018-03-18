@@ -20,6 +20,6 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/parking-time-elapsed").withSockJS();
+        registry.addEndpoint("/parking-time-tracker").withSockJS();
     }
 }

@@ -21,7 +21,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
  * Created by Dmitriy Nefedchenko on 23.02.18.
  */
 @Configuration
-public class WebMvcSecurityConfiguration extends WebSecurityConfigurerAdapter {
+public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired private OsmdUserDetailsService userDetailsService;
     @Autowired private MessageSource messageSource;
 
