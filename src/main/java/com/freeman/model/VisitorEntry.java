@@ -1,7 +1,5 @@
 package com.freeman.model;
 
-import java.time.LocalTime;
-
 /**
  * Created by Dmitriy Nefedchenko on 02.03.2018.
  */
@@ -15,7 +13,7 @@ public class VisitorEntry {
     private ParkingStatus status;
 
     public VisitorEntry() {
-        this.status = ParkingStatus.ALLOWED;
+        this.status = ParkingStatus.allowed;
     }
 
     public VisitorEntry(String id, String vehicleNumber, String entranceTime, String exitTime, String elapsedTime) {
@@ -24,7 +22,7 @@ public class VisitorEntry {
         this.entranceTime = entranceTime;
         this.exitTime = exitTime;
         this.elapsedTime = elapsedTime;
-        this.status = ParkingStatus.ALLOWED;
+        this.status = ParkingStatus.allowed;
     }
 
     public String getId() {

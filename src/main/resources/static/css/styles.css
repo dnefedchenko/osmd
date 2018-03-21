@@ -8,12 +8,12 @@
     color: red;
 }
 
-.warning-status {
-    background-color: #FFC107;
+.warning {
+    background-color: #FFECB3;
 }
 
-.alarm-status {
-    background-color: #E57373;
+.alarm {
+    background-color: #FFAB91;
 }
 
 #login-header {

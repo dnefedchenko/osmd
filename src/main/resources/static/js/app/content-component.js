@@ -1,8 +1,8 @@
 Vue.component('osmd-content', {
     template: '<div>' +
                 '<md-toolbar class="md-primary" md-elevation="1">' +
-                    '<h3 class="md-title"  style="flex: 1">Visitors</h3>' +
-                    '<md-button v-on:click="logout">Log Out</md-button>' +
+                    '<h3 class="md-title"  style="flex: 1">Посетители</h3>' +
+                    '<md-button v-on:click="logout">Выход</md-button>' +
                 '</md-toolbar>' +
 
                 '<div class="md-layout">' +
@@ -14,13 +14,13 @@ Vue.component('osmd-content', {
                         '<form class="md-layout md-gutter md-alignment-center-left">' +
                             '<div class="md-layout-item">' +
                                 '<md-autocomplete v-model="selectedVehicle" :md-options="vehicleNumbers">' +
-                                    '<label>Vehicle Registration Number</label>' +
+                                    '<label>Гос. Номер</label>' +
                                 '</md-autocomplete>' +
                             '</div>' +
 
                             '<div class="md-layout-item">' +
                                 '<md-field>' +
-                                    '<label for="timeRangeSelect">Time Range</label>' +
+                                    '<label for="timeRangeSelect">Время стоянки(мин)</label>' +
                                     '<md-select name="timeRangeSelect" id="timeRangeSelect" v-model="selectedTime">' +
                                         '<md-option v-for="timeRange in timeRangeOptions" :key="timeRange" v-bind:value="timeRange">{{timeRange}}</md-option>' +
                                     '</md-select>' +
@@ -28,8 +28,8 @@ Vue.component('osmd-content', {
                             '</div>' +
 
                             '<div class="md-layout-item">' +
-                                '<md-button type="button" class="md-raised md-primary" @click="letIn" v-bind:disabled="!selectedVehicle">Let In&nbsp;' +
-                                    '<md-icon>flight_land</md-icon>' +
+                                '<md-button type="button" class="md-raised md-primary" @click="letIn" v-bind:disabled="!selectedVehicle">' +
+                                    '<md-icon>flight_land</md-icon>&nbsp;&nbsp;Впустить' +
                                 '</md-button>' +
                             '</div>' +
                         '</form>' +
@@ -37,19 +37,23 @@ Vue.component('osmd-content', {
                         '<div class="md-layout" v-if="anyVehiclesIn">' +
                             '<md-table class="md-layout-item" v-model="vehicles" md-card>' +
                                 '<md-table-toolbar>' +
-                                    '<h1 class="md-title">Vehicles In The Yard</h1>' +
+                                    '<h1 class="md-title">Авто во дворе</h1>' +
                                 '</md-table-toolbar>' +
 
-                                '<md-table-row slot="md-table-row" slot-scope="{ item }" v-bind:class="{\'warning-status\': warningStatus(item.status), \'alarm-status\': alarmStatus(item.status)}">' +
+                                '<md-table-row slot="md-table-row" slot-scope="{ item }" v-bind:class="{warning: warningStatus(item.status), alarm: alarmStatus(item.status)}">' +
                                     '<md-table-cell md-label="#" md-numeric>{{item.id}}</md-table-cell>' +
-                                    '<md-table-cell md-label="Vehicle Number">{{item.vehicleNumber}}</md-table-cell>' +
-                                    '<md-table-cell md-label="Entrance Time">{{item.entranceTime}}</md-table-cell>' +
-                                    '<md-table-cell md-label="Exit Time">{{item.exitTime}}</md-table-cell>' +
-                                    '<md-table-cell md-label="Elapsed Time(min)">{{item.elapsedTime}}</md-table-cell>' +
-                                    '<md-table-cell md-label="Status">{{item.status}}</md-table-cell>' +
-                                    '<md-table-cell md-label="Action">' +
-                                        '<md-button type="button" class="md-raised md-primary" @click="letOut(item.vehicleNumber)">Let out&nbsp;' +
-                                            '<md-icon>flight_takeoff</md-icon>' +
+                                    '<md-table-cell md-label="Гос. Номер">{{item.vehicleNumber}}</md-table-cell>' +
+                                    '<md-table-cell md-label="Статус">' +
+                                        '<md-icon v-if="warningStatus(item.status)">schedule</md-icon>' +
+                                        '<md-icon v-if="alarmStatus(item.status)">error_outline</md-icon>&nbsp;' +
+                                        '{{item.status}}' +
+                                    '</md-table-cell>' +
+                                    '<md-table-cell md-label="Время заезда">{{item.entranceTime}}</md-table-cell>' +
+                                    '<md-table-cell md-label="Время выезда">{{item.exitTime}}</md-table-cell>' +
+                                    '<md-table-cell md-label="Время Стоянки(мин)">{{item.elapsedTime}}</md-table-cell>' +
+                                    '<md-table-cell md-label="Действие">' +
+                                        '<md-button type="button" class="md-raised md-primary" @click="letOut(item.vehicleNumber)">' +
+                                            '<md-icon>flight_takeoff</md-icon>&nbsp;&nbsp;Выпустить' +
                                         '</md-button>' +
                                     '</md-table-cell>' +
                                 '</md-table-row>' +
@@ -85,11 +89,13 @@ Vue.component('osmd-content', {
     computed: {
         anyVehiclesIn: function () {
             return this.vehicles.length;
+        },
+        sortedVehicles: function () {
+            return this.vehicles.sort((a, b) => b.elapsedTime - a.elapsedTime);
         }
     },
     methods: {
         logout: function () {
-            var self = this;
             var logoutPromise = $.post('/auth/logout', function (success) {
                 store.setAuthenticated(false);
             });
@@ -161,10 +167,10 @@ Vue.component('osmd-content', {
             });
         },
         warningStatus: function (status) {
-            return status === 'ACCEPTABLE';
+            return status === 'acceptable';
         },
         alarmStatus: function (status) {
-            return status === 'OVERDUE';
+            return status === 'overdue';
         }
     }
 });

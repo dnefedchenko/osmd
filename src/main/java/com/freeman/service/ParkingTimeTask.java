@@ -26,7 +26,7 @@ public class ParkingTimeTask {
     public ParkingTimeTask(VisitorEntry visitor, SimpMessagingTemplate messagingTemplate) {
         this.countDownTimer = new Timer();
         this.id = visitor.getVehicleNumber();
-        this.parkingTime = (long)(60*60*Double.parseDouble(visitor.getParkingTime()));
+        this.parkingTime = (long)(60*Double.parseDouble(visitor.getParkingTime()));
         this.messagingTemplate = messagingTemplate;
     }
 
@@ -36,21 +36,21 @@ public class ParkingTimeTask {
         countDownTimer.schedule(new TimerTask() {
             @Override
             public void run() {
-                if (elapsedTime != parkingTime && elapsedTime > 0 && elapsedTime % 10 == 0) {
-                    logger.info(String.format("Elapsed time: %s, status: %s", elapsedTime, ALLOWED));
-                    messagingTemplate.convertAndSend("/topic", new NotificationMessage(id, parkingTime - elapsedTime, ALLOWED.name()));
-                } else if (elapsedTime <= 0 && Math.abs(elapsedTime) < 15 && elapsedTime % 10 == 0) {
-                    logger.info(String.format("Elapsed time: %s, status: %s", elapsedTime, ACCEPTABLE));
-                    messagingTemplate.convertAndSend("/topic", new NotificationMessage(id, parkingTime - elapsedTime, ACCEPTABLE.name()));
+                if (elapsedTime != parkingTime && elapsedTime >= 0) {
+                    logger.info(String.format("Elapsed time: %s, status: %s", elapsedTime, allowed));
+                    messagingTemplate.convertAndSend("/topic", new NotificationMessage(id, parkingTime - elapsedTime, allowed.name()));
+                } else if (elapsedTime < 0 && Math.abs(elapsedTime) <= 15) {
+                    logger.info(String.format("Elapsed time: %s, status: %s", elapsedTime, acceptable));
+                    messagingTemplate.convertAndSend("/topic", new NotificationMessage(id, parkingTime - elapsedTime, acceptable.name()));
                 } else if (elapsedTime < 0 && Math.abs(elapsedTime) > 15) {
-                    logger.info(String.format("Elapsed time: %s, status: %s", elapsedTime, OVERDUE));
-                    messagingTemplate.convertAndSend("/topic", new NotificationMessage(id, parkingTime - elapsedTime, OVERDUE.name()));
+                    logger.info(String.format("Elapsed time: %s, status: %s", elapsedTime, overdue));
+                    messagingTemplate.convertAndSend("/topic", new NotificationMessage(id, parkingTime - elapsedTime, overdue.name()));
                     countDownTimer.cancel();
                 }
 
-                elapsedTime-=5;
+                elapsedTime-=1;
             }
-        }, 0, 5000);
+        }, 0, 60000);
     }
 
     public String getId() {
