@@ -7,7 +7,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Dmitriy Nefedchenko on 02.03.2018.
@@ -16,15 +18,13 @@ import java.util.List;
 public class VisitorEntryService {
     private List<VisitorEntry> visitors;
     private SimpMessagingTemplate messagingTemplate;
+    private Map<String, ParkingTimeTask> tasksBeingTracked;
 
     @Autowired
     public VisitorEntryService(SimpMessagingTemplate messagingTemplate) {
         this.visitors = new ArrayList<>();
         this.messagingTemplate = messagingTemplate;
-    }
-
-    public List<VisitorEntry> getVisitors() {
-        return this.visitors;
+        this.tasksBeingTracked = new HashMap<>();
     }
 
     public VisitorEntry letVisitorIn(VisitorEntry entry) {
@@ -41,5 +41,12 @@ public class VisitorEntryService {
     private void startTimeTracking(VisitorEntry visitor) {
         ParkingTimeTask task = new ParkingTimeTask(visitor, messagingTemplate);
         task.startTimeTracking();
+        this.tasksBeingTracked.put(task.getId(), task);
+    }
+
+    public String letVisitorOut(String vrn) {
+        ParkingTimeTask task = this.tasksBeingTracked.remove(vrn);
+        task.complete();
+        return vrn;
     }
 }

@@ -48,7 +48,7 @@ Vue.component('osmd-content', {
                                     '<md-table-cell md-label="Elapsed Time(min)">{{item.elapsedTime}}</md-table-cell>' +
                                     '<md-table-cell md-label="Status">{{item.status}}</md-table-cell>' +
                                     '<md-table-cell md-label="Action">' +
-                                        '<md-button type="button" class="md-raised md-primary" @click="letOut">Let out&nbsp;' +
+                                        '<md-button type="button" class="md-raised md-primary" @click="letOut(item.vehicleNumber)">Let out&nbsp;' +
                                             '<md-icon>flight_takeoff</md-icon>' +
                                         '</md-button>' +
                                     '</md-table-cell>' +
@@ -150,8 +150,15 @@ Vue.component('osmd-content', {
         resetSelectedVehicle: function () {
             this.selectedVehicle = '';
         },
-        letOut: function () {
-            // TODO: stop timer if not already stopped
+        letOut: function (vehicleNumber) {
+            var self = this;
+            var letInPromise = $.post('/visitors/'.concat(vehicleNumber), function (response) {
+                self.vehicles = self.vehicles.filter(vehicle => vehicle.vehicleNumber !== vehicleNumber);
+            });
+
+            letInPromise.fail(function (error) {
+                console.log(error);
+            });
         }
     }
 });

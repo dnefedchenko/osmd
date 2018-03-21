@@ -52,4 +52,12 @@ public class ParkingTimeTask {
             }
         }, 0, 5000);
     }
+
+    public String getId() {
+        return id;
+    }
+
+    public void complete() {
+        this.countDownTimer.cancel();
+    }
 }
