@@ -8,6 +8,14 @@
     color: red;
 }
 
+.warning-status {
+    background-color: #FFC107;
+}
+
+.alarm-status {
+    background-color: #E57373;
+}
+
 #login-header {
     text-align: center;
 }

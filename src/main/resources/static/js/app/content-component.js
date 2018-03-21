@@ -40,7 +40,7 @@ Vue.component('osmd-content', {
                                     '<h1 class="md-title">Vehicles In The Yard</h1>' +
                                 '</md-table-toolbar>' +
 
-                                '<md-table-row slot="md-table-row" slot-scope="{ item }">' +
+                                '<md-table-row slot="md-table-row" slot-scope="{ item }" v-bind:class="{\'warning-status\': warningStatus(item.status), \'alarm-status\': alarmStatus(item.status)}">' +
                                     '<md-table-cell md-label="#" md-numeric>{{item.id}}</md-table-cell>' +
                                     '<md-table-cell md-label="Vehicle Number">{{item.vehicleNumber}}</md-table-cell>' +
                                     '<md-table-cell md-label="Entrance Time">{{item.entranceTime}}</md-table-cell>' +
@@ -159,6 +159,12 @@ Vue.component('osmd-content', {
             letInPromise.fail(function (error) {
                 console.log(error);
             });
+        },
+        warningStatus: function (status) {
+            return status === 'ACCEPTABLE';
+        },
+        alarmStatus: function (status) {
+            return status === 'OVERDUE';
         }
     }
 });
