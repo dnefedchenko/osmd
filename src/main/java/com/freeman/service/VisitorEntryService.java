@@ -5,7 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalTime;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,10 +31,10 @@ public class VisitorEntryService {
     }
 
     public VisitorEntry letVisitorIn(VisitorEntry entry) {
-        LocalTime entranceTime = LocalTime.now();
-        LocalTime exitTime = entranceTime.plusMinutes((long)(Double.parseDouble(entry.getParkingTime())*60));
-        entry.setEntranceTime(String.format("%s:%s:%s", entranceTime.getHour(), entranceTime.getMinute(), entranceTime.getSecond()));
-        entry.setExitTime(String.format("%s:%s:%s", exitTime.getHour(), exitTime.getMinute(), exitTime.getSecond()));
+        LocalDateTime entranceTime = LocalDateTime.ofInstant(Instant.now(), ZoneId.of("Europe/Kiev"));
+        LocalDateTime exitTime = entranceTime.plusMinutes((long)(Double.parseDouble(entry.getParkingTime())*60));
+        entry.setEntranceTime(DateTimeFormatter.ISO_DATE_TIME.format(entranceTime));
+        entry.setExitTime(DateTimeFormatter.ISO_DATE_TIME.format(exitTime));
         entry.setElapsedTimeMinutes("0");
         this.visitors.add(entry);
         startTimeTracking(entry);
@@ -48,5 +51,11 @@ public class VisitorEntryService {
         ParkingTimeTask task = this.tasksBeingTracked.remove(vrn);
         task.complete();
         return vrn;
+    }
+
+    public static void main(String[] args) {
+        LocalDateTime dateTime = LocalDateTime.ofInstant(Instant.now(), ZoneId.of("Europe/Kiev"));
+        String isoDateTime = DateTimeFormatter.ISO_DATE_TIME.format(dateTime);
+        System.out.println(isoDateTime);
     }
 }

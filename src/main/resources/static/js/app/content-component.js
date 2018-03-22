@@ -126,6 +126,7 @@ Vue.component('osmd-content', {
             };
 
             var visitorPromise = $.post('/visitors', visitor, function (response) {
+                self.formatTime(response);
                 self.vehicles.unshift(response);
                 self.resetSelectedVehicle();
             });
@@ -133,6 +134,13 @@ Vue.component('osmd-content', {
             visitorPromise.fail(function (error) {
                 console.log(error);
             });
+        },
+        formatTime: function (visitor) {
+            var format = 'HH:mm';
+            var entranceTime = moment(visitor['entranceTime']).format(format);
+            var exitTime = moment(visitor['exitTime']).format(format);
+            visitor['entranceTime'] = entranceTime;
+            visitor['exitTime'] = exitTime;
         },
         loadVehicleRegistrationNumbers: function() {
             var self = this;
