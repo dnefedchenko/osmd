@@ -25,8 +25,11 @@
     width: 100%;
 }
 
+.md-card {
+    min-width: 100%;
+}
+
 .md-content {
-    display: inline-block;
     padding: 15px;
     max-height: 50%;
     min-height: 50%;

@@ -35,29 +35,42 @@ Vue.component('osmd-content', {
                         '</form>' +
 
                         '<div class="md-layout" v-if="anyVehiclesIn">' +
-                            '<md-table class="md-layout-item" v-model="vehicles" md-card>' +
+
+                            '<md-table md-card>' +
                                 '<md-table-toolbar>' +
                                     '<h1 class="md-title">Авто во дворе</h1>' +
                                 '</md-table-toolbar>' +
 
-                                '<md-table-row slot="md-table-row" slot-scope="{ item }" v-bind:class="{warning: warningStatus(item.status), alarm: alarmStatus(item.status)}">' +
-                                    '<md-table-cell md-label="#" md-numeric>{{item.id}}</md-table-cell>' +
-                                    '<md-table-cell md-label="Гос. Номер">{{item.vehicleNumber}}</md-table-cell>' +
-                                    '<md-table-cell md-label="Статус">' +
-                                        '<md-icon v-if="warningStatus(item.status)">schedule</md-icon>' +
-                                        '<md-icon v-if="alarmStatus(item.status)">error_outline</md-icon>&nbsp;' +
-                                        '{{item.status}}' +
+                                '<md-table-row>' +
+                                    '<md-table-head md-numeric>#</md-table-head>' +
+                                    '<md-table-head>Гос. Номер</md-table-head>' +
+                                    '<md-table-head>Статус</md-table-head>' +
+                                    '<md-table-head>Время заезда</md-table-head>' +
+                                    '<md-table-head>Время выезда</md-table-head>' +
+                                    '<md-table-head>Время Стоянки(мин)</md-table-head>' +
+                                    '<md-table-head>Действие</md-table-head>' +
+                                '</md-table-row>' +
+
+                                '<md-table-row v-for="(vehicle, index) in sortedVehicles" :key="vehicle.vehicleNumber" ' +
+                                        'v-bind:class="{warning: warningStatus(vehicle.status), alarm: alarmStatus(vehicle.status)}">' +
+                                    '<md-table-cell md-numeric>{{index+1}}</md-table-cell>' +
+                                    '<md-table-cell>{{vehicle.vehicleNumber}}</md-table-cell>' +
+                                    '<md-table-cell>' +
+                                        '<md-icon v-if="warningStatus(vehicle.status)">schedule</md-icon>' +
+                                        '<md-icon v-if="alarmStatus(vehicle.status)">error_outline</md-icon>&nbsp;' +
+                                        '{{displayStatus(vehicle.status)}}' +
                                     '</md-table-cell>' +
-                                    '<md-table-cell md-label="Время заезда">{{item.entranceTime}}</md-table-cell>' +
-                                    '<md-table-cell md-label="Время выезда">{{item.exitTime}}</md-table-cell>' +
-                                    '<md-table-cell md-label="Время Стоянки(мин)">{{item.elapsedTime}}</md-table-cell>' +
-                                    '<md-table-cell md-label="Действие">' +
-                                        '<md-button type="button" class="md-raised md-primary" @click="letOut(item.vehicleNumber)">' +
+                                    '<md-table-cell>{{vehicle.entranceTime}}</md-table-cell>' +
+                                    '<md-table-cell>{{vehicle.exitTime}}</md-table-cell>' +
+                                    '<md-table-cell >{{vehicle.elapsedTime}}</md-table-cell>' +
+                                    '<md-table-cell>' +
+                                        '<md-button type="button" class="md-raised md-primary" @click="letOut(vehicle.vehicleNumber)">' +
                                             '<md-icon>flight_takeoff</md-icon>&nbsp;&nbsp;Выпустить' +
                                         '</md-button>' +
                                     '</md-table-cell>' +
                                 '</md-table-row>' +
                             '</md-table>' +
+
                         '</div>' +
 
                     '</div>' +
@@ -171,6 +184,15 @@ Vue.component('osmd-content', {
         },
         alarmStatus: function (status) {
             return status === 'overdue';
+        },
+        displayStatus: function (status) {
+            if (status === 'acceptable') {
+                return 'Допустимо';
+            } else if (status === 'overdue') {
+                return 'Задержка';
+            } else {
+                return 'Разрешено';
+            }
         }
     }
 });
