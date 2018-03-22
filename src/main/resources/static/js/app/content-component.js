@@ -39,6 +39,7 @@ Vue.component('osmd-content', {
                             '<md-table md-card>' +
                                 '<md-table-toolbar>' +
                                     '<h1 class="md-title">Авто во дворе</h1>' +
+                                    '<h1 class="md-title parking-header">Свободных мест: {{freeParkingPlacesCount}}</h1>' +
                                 '</md-table-toolbar>' +
 
                                 '<md-table-row>' +
@@ -89,7 +90,8 @@ Vue.component('osmd-content', {
             ],
             vehicles: [],
             stompClient: null,
-            stompSubscription: null
+            stompSubscription: null,
+            freeParkingPlacesCount: 8
         }
     },
     created: function() {
@@ -120,6 +122,10 @@ Vue.component('osmd-content', {
         letIn: function () {
             var self = this;
 
+            if (self.vehicles.map(v => v.vehicleNumber).indexOf(this.selectedVehicle) !== -1) {
+                return;
+            }
+
             var visitor = {
                 vehicleNumber: this.selectedVehicle,
                 parkingTime: this.selectedTime
@@ -129,6 +135,7 @@ Vue.component('osmd-content', {
                 self.formatTime(response);
                 self.vehicles.unshift(response);
                 self.resetSelectedVehicle();
+                self.decrementParkingPlacesCount();
             });
 
             visitorPromise.fail(function (error) {
@@ -181,6 +188,7 @@ Vue.component('osmd-content', {
             var self = this;
             var letInPromise = $.post('/visitors/'.concat(vehicleNumber), function (response) {
                 self.vehicles = self.vehicles.filter(vehicle => vehicle.vehicleNumber !== vehicleNumber);
+                self.incrementParkingPlacesCount();
             });
 
             letInPromise.fail(function (error) {
@@ -201,6 +209,12 @@ Vue.component('osmd-content', {
             } else {
                 return 'Разрешено';
             }
+        },
+        incrementParkingPlacesCount: function () {
+            this.freeParkingPlacesCount++;
+        },
+        decrementParkingPlacesCount: function () {
+            this.freeParkingPlacesCount--;
         }
     }
 });

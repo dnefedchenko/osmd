@@ -8,6 +8,11 @@
     color: red;
 }
 
+.md-title.parking-header {
+    text-align: end;
+    margin-right: 5px;
+}
+
 .warning {
     background-color: #FFECB3;
 }
