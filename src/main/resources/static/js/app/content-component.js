@@ -97,6 +97,7 @@ Vue.component('osmd-content', {
     created: function() {
         this.loadVehicleRegistrationNumbers();
         this.openSockJsConnection();
+        this.restoreVehiclesIfAny();
     },
     destroyed: function() {
         this.disconnectStompClient();
@@ -110,9 +111,28 @@ Vue.component('osmd-content', {
         }
     },
     methods: {
-        logout: function () {
+        restoreVehiclesIfAny: function () {
+            var storedVehicles = this.getStoredVehicles();
+            if (storedVehicles && storedVehicles.length) {
+                this.vehicles = storedVehicles;
+                this.freeParkingPlacesCount -= storedVehicles.length;
+            }
+        },
+        getStoredVehicles: function() {
+            var vehicles = [];
+            var keys = Object.keys(localStorage);
+            var i = keys.length;
+
+            while (i--) {
+                vehicles.push(JSON.parse(localStorage.getItem(keys[i])));
+            }
+
+            return vehicles;
+        },
+        logout: function () {localStorage
             var logoutPromise = $.post('/auth/logout', function (success) {
                 store.setAuthenticated(false);
+                localStorage.clear();
             });
 
             logoutPromise.fail(function (error) {
@@ -134,6 +154,7 @@ Vue.component('osmd-content', {
             var visitorPromise = $.post('/visitors', visitor, function (response) {
                 self.formatTime(response);
                 self.vehicles.unshift(response);
+                self.addToStorage(response);
                 self.resetSelectedVehicle();
                 self.decrementParkingPlacesCount();
             });
@@ -148,6 +169,12 @@ Vue.component('osmd-content', {
             var exitTime = moment(visitor['exitTime']).format(format);
             visitor['entranceTime'] = entranceTime;
             visitor['exitTime'] = exitTime;
+        },
+        addToStorage: function (visitor) {
+            localStorage.setItem(visitor.vehicleNumber, JSON.stringify(visitor));
+        },
+        removeFromStorage: function (key) {
+            localStorage.removeItem(key);
         },
         loadVehicleRegistrationNumbers: function() {
             var self = this;
@@ -188,6 +215,7 @@ Vue.component('osmd-content', {
             var self = this;
             var letInPromise = $.post('/visitors/'.concat(vehicleNumber), function (response) {
                 self.vehicles = self.vehicles.filter(vehicle => vehicle.vehicleNumber !== vehicleNumber);
+                self.removeFromStorage(vehicleNumber);
                 self.incrementParkingPlacesCount();
             });
 
