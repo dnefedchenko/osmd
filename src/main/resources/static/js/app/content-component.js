@@ -48,7 +48,7 @@ Vue.component('osmd-content', {
                                     '<md-table-head>Статус</md-table-head>' +
                                     '<md-table-head>Время заезда</md-table-head>' +
                                     '<md-table-head>Время выезда</md-table-head>' +
-                                    '<md-table-head>Время Стоянки(мин)</md-table-head>' +
+                                    '<md-table-head>Время Стоянки</md-table-head>' +
                                     '<md-table-head>Действие</md-table-head>' +
                                 '</md-table-row>' +
 
@@ -63,7 +63,7 @@ Vue.component('osmd-content', {
                                     '</md-table-cell>' +
                                     '<md-table-cell>{{vehicle.entranceTime}}</md-table-cell>' +
                                     '<md-table-cell>{{vehicle.exitTime}}</md-table-cell>' +
-                                    '<md-table-cell >{{vehicle.elapsedTime}}</md-table-cell>' +
+                                    '<md-table-cell >{{formatElapsedTime(vehicle.elapsedTime)}}</md-table-cell>' +
                                     '<md-table-cell>' +
                                         '<md-button type="button" class="md-raised md-primary" @click="letOut(vehicle.vehicleNumber)">' +
                                             '<md-icon>flight_takeoff</md-icon>&nbsp;&nbsp;Выпустить' +
@@ -178,6 +178,16 @@ Vue.component('osmd-content', {
             var exitTime = moment(visitor['exitTime']).format(format);
             visitor['entranceTime'] = entranceTime;
             visitor['exitTime'] = exitTime;
+        },
+        formatElapsedTime: function (timeString) {
+            var time = +timeString;
+            if (time < 60) {
+                return time + ' мин';
+            } else {
+                var hours = time/60;
+                var minutes = time%60;
+                return hours.toFixed()+'ч '+minutes+'мин';
+            }
         },
         addToStorage: function (visitor) {
             localStorage.setItem(visitor.vehicleNumber, JSON.stringify(visitor));
