@@ -20,9 +20,9 @@ Vue.component('osmd-content', {
 
                             '<div class="md-layout-item">' +
                                 '<md-field>' +
-                                    '<label for="timeRangeSelect">Время стоянки(мин)</label>' +
+                                    '<label for="timeRangeSelect">Впустить на</label>' +
                                     '<md-select name="timeRangeSelect" id="timeRangeSelect" v-model="selectedTime">' +
-                                        '<md-option v-for="timeRange in timeRangeOptions" :key="timeRange" v-bind:value="timeRange">{{timeRange}}</md-option>' +
+                                        '<md-option v-for="timeRange in timeRangeOptions" :key="timeRange.option" v-bind:value="timeRange.value">{{timeRange.option}}</md-option>' +
                                     '</md-select>' +
                                 '</md-field>' +
                             '</div>' +
@@ -86,7 +86,16 @@ Vue.component('osmd-content', {
             selectedTime: '0.05',
             vehicleNumbers: [],
             timeRangeOptions: [
-                '0.05', '0.5', '1.0', '1.5', '2.0', '2.5', '3.0', '3.5', '4.0', '4.5', '5.0'
+                {option: 'Пять минут', value: '0.05'},
+                {option: 'Полчаса', value: '0.5'},
+                {option: 'Час', value: '1.0'},
+                {option: 'Полтора часа', value: '1.5'},
+                {option: 'Два часа', value: '2.0'},
+                {option: 'Два с половиной часа', value: '2.5'},
+                {option: 'Три часа', value : '3.0'},
+                {option: 'Три с половиной часа', value: '3.5'},
+                {option: 'Четыре часа', value: '4.0'},
+                {option: 'Сутки', value: '24'}
             ],
             vehicles: [],
             stompClient: null,
