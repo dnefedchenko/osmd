@@ -82,6 +82,7 @@ Vue.component('osmd-content', {
               '</div>',
     data: function() {
         return {
+            pingPongInterval: undefined,
             selectedVehicle: null,
             selectedTime: '0.05',
             vehicleNumbers: [],
@@ -107,9 +108,11 @@ Vue.component('osmd-content', {
         this.loadVehicleRegistrationNumbers();
         this.openSockJsConnection();
         this.restoreVehiclesIfAny();
+        this.setRepeatablePingCalls();
     },
     destroyed: function() {
         this.disconnectStompClient();
+        clearInterval(this.pingPongInterval);
     },
     computed: {
         anyVehiclesIn: function () {
@@ -268,6 +271,14 @@ Vue.component('osmd-content', {
         },
         decrementParkingPlacesCount: function () {
             this.freeParkingPlacesCount--;
+        },
+        setRepeatablePingCalls: function () {
+            /* Perform ping every 20 minutes to keep http session alive */
+            this.pingPongInterval = window.setInterval(function () {
+                $.get('/ping', function (success) {
+                    console.log('Successful ping-pong call has been performed at '.concat(moment().format("h:mm:ss a")));
+                })
+            }, 1200000);
         }
     }
 });
