@@ -84,10 +84,10 @@ Vue.component('osmd-content', {
         return {
             pingPongInterval: undefined,
             selectedVehicle: null,
-            selectedTime: '0.05',
+            selectedTime: '0.5',
             vehicleNumbers: [],
             timeRangeOptions: [
-                {option: 'Три минуты', value: '0.05'},
+                // {option: 'Три минуты', value: '0.05'},
                 {option: 'Полчаса', value: '0.5'},
                 {option: 'Час', value: '1.0'},
                 {option: 'Полтора часа', value: '1.5'},
