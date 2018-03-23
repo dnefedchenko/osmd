@@ -4,7 +4,6 @@ package com.freeman.model;
  * Created by Dmitriy Nefedchenko on 02.03.2018.
  */
 public class VisitorEntry {
-    private String id;
     private String vehicleNumber;
     private String entranceTime;
     private String exitTime;
@@ -16,21 +15,12 @@ public class VisitorEntry {
         this.status = ParkingStatus.allowed;
     }
 
-    public VisitorEntry(String id, String vehicleNumber, String entranceTime, String exitTime, String elapsedTime) {
-        this.id = id;
+    public VisitorEntry(String vehicleNumber, String entranceTime, String exitTime, String elapsedTime) {
         this.vehicleNumber = vehicleNumber;
         this.entranceTime = entranceTime;
         this.exitTime = exitTime;
         this.elapsedTime = elapsedTime;
         this.status = ParkingStatus.allowed;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getVehicleNumber() {
@@ -84,8 +74,7 @@ public class VisitorEntry {
     @Override
     public String toString() {
         return "VisitorEntry{" +
-                "id='" + id + '\'' +
-                ", vehicleNumber='" + vehicleNumber + '\'' +
+                "  vehicleNumber='" + vehicleNumber + '\'' +
                 ", entranceTime=" + entranceTime +
                 ", exitTime=" + exitTime +
                 ", elapsedTime='" + elapsedTime + '\'' +

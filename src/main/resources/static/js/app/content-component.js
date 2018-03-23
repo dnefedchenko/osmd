@@ -185,11 +185,12 @@ Vue.component('osmd-content', {
         openSockJsConnection: function () {
             var self = this;
             var socket = new SockJS('/parking-time-tracker');
-            self.stompClient = Stomp.over(socket);
-            self.stompClient.connect({}, function (frame) {
+            this.stompClient = Stomp.over(socket);
+            this.stompClient.connect({}, function (frame) {
                 self.stompSubscription = self.stompClient.subscribe('/topic', function (message) {
                     var payload = JSON.parse(message.body);
                     self.updateVehicleRecord(payload);
+                    self.updateVehicleInStorage(payload);
                 })
             });
         },
@@ -201,11 +202,16 @@ Vue.component('osmd-content', {
                 }
             });
         },
+        updateVehicleInStorage: function (updatedVehicleInfo) {
+            var vehicle = JSON.parse(localStorage.getItem(updatedVehicleInfo.id));
+            vehicle.elapsedTime = updatedVehicleInfo['elapsedTime'];
+            vehicle.status = updatedVehicleInfo['status'];
+            localStorage.setItem(updatedVehicleInfo.id, JSON.stringify(vehicle));
+        },
         disconnectStompClient: function() {
-            var self = this;
-            if (self.stompClient !== null) {
-                self.stompSubscription.unsubscribe();
-                self.stompClient.disconnect();
+            if (this.stompClient !== null) {
+                this.stompSubscription.unsubscribe();
+                this.stompClient.disconnect();
             }
         },
         resetSelectedVehicle: function () {
