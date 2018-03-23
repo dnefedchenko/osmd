@@ -86,7 +86,7 @@ Vue.component('osmd-content', {
             selectedTime: '0.05',
             vehicleNumbers: [],
             timeRangeOptions: [
-                {option: 'Пять минут', value: '0.05'},
+                {option: 'Три минуты', value: '0.05'},
                 {option: 'Полчаса', value: '0.5'},
                 {option: 'Час', value: '1.0'},
                 {option: 'Полтора часа', value: '1.5'},
