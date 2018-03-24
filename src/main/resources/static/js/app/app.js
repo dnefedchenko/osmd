@@ -17,14 +17,14 @@ Vue.component('osmd-app-component', {
                 '<form novalidate class="md-layout" v-if="!isAuthenticated">\n' +
                     '<md-card class="md-layout-item md-size-20 md-small-size-100 login-wrapper">' +
                         '<md-card-header>\n' +
-                            '<div id="login-header" class="md-title">Sign In</div>\n' +
+                            '<div id="login-header" class="md-title">Вход</div>\n' +
                         '</md-card-header>\n' +
 
                         '<md-card-content>\n' +
                             '<div class="md-layout">\n' +
                                 '<div class="md-layout-item md-small-size-100">\n' +
                                     '<md-field>\n' +
-                                        '<label for="username">Username</label>\n' +
+                                        '<label for="username">Имя Пользователя</label>\n' +
                                         '<md-input name="username" id="username" v-model="username"/>\n' +
                                     '</md-field>\n' +
                                 '</div>' +
@@ -33,7 +33,7 @@ Vue.component('osmd-app-component', {
                             '<div class="md-layout">\n' +
                                 '<div class="md-layout-item md-small-size-100">\n' +
                                     '<md-field>\n' +
-                                        '<label for="password">Last Name</label>\n' +
+                                        '<label for="password">Пароль</label>\n' +
                                         '<md-input type="password" name="password" id="password" v-model="password" />\n' +
                                     '</md-field>\n' +
                                 '</div>\n' +
@@ -41,7 +41,7 @@ Vue.component('osmd-app-component', {
 
                             '<div class="md-layout">\n' +
                                 '<div class="md-layout-item md-small-size-100">\n' +
-                                    '<md-button id="login-button" class="md-raised md-primary" v-on:click="doLogin">Sign In</md-button>' +
+                                    '<md-button id="login-button" class="md-raised md-primary" v-on:click="doLogin">Войти</md-button>' +
                                 '</div>\n' +
                             '</div>\n' +
                         '</md-card-content>\n' +
