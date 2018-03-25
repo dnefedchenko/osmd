@@ -39,10 +39,10 @@ public class ParkingTimeTask {
                 if (remainingTime != parkingTime && remainingTime >= 0) {
                     logger.info(String.format("Elapsed time: %s, status: %s", remainingTime, allowed));
                     messagingTemplate.convertAndSend("/topic", new NotificationMessage(id, parkingTime - remainingTime, allowed.name()));
-                } else if (remainingTime < 0 && Math.abs(remainingTime) <= 1) {
+                } else if (remainingTime < 0 && Math.abs(remainingTime) <= 15) {
                     logger.info(String.format("Elapsed time: %s, status: %s", remainingTime, acceptable));
                     messagingTemplate.convertAndSend("/topic", new NotificationMessage(id, parkingTime - remainingTime, acceptable.name()));
-                } else if (remainingTime < 0 && Math.abs(remainingTime) > 1) {
+                } else if (remainingTime < 0 && Math.abs(remainingTime) > 15) {
                     logger.info(String.format("Elapsed time: %s, status: %s", remainingTime, overdue));
                     messagingTemplate.convertAndSend("/topic", new NotificationMessage(id, parkingTime - remainingTime, overdue.name()));
                     countDownTimer.cancel();
